@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Oct 15 20:22:31 IST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-015f-2085-a7b5-00000708b8f0 
+on database directory /Users/anildeshpande/Documents/workspace/SampleDerbyProject/todolistdatabase.db with class loader sun.misc.Launcher$AppClassLoader@659e0bfd 
+Loaded from file:/Users/anildeshpande/Documents/workspace/SampleDerbyProject/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_60-b27
+user.dir=/Users/anildeshpande/Documents/workspace/SampleDerbyProject
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.11.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
