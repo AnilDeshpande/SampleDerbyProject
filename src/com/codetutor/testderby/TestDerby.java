@@ -1,7 +1,10 @@
 package com.codetutor.testderby;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TestDerby {
@@ -10,7 +13,7 @@ public class TestDerby {
 	
 	private static final String TABLE_TODOLIST = "table_todolist";
 	private static final String COLUMN_TODO_ID = "column_todolist_id";
-	private static final String COLUMN_USERID = "column_userid";
+	private static final String COLUMN_USERID_FK = "column_userid";
 	private static final String COLUMN_TODO = "column_todo";
 	private static final String COLUMN_PLACE = "column_place";
 	
@@ -22,11 +25,15 @@ public class TestDerby {
 	private static final String CREATE_USER_TABLE = "CREATE TABLE "+TABLE_USERS+
 														" ("+COLUMN_USER_ID+" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "+
 															COLUMN_USER_NAME+" VARCHAR(24) NOT NULL, "+
-															COLUMN_USER_PASSWORD + "VARCHAR(24) NOT NULL, "+
-															"CONSTRAINT primary_key PRIMARY KEY ("+COLUMN_USER_ID+")";
+															COLUMN_USER_PASSWORD + " VARCHAR(24) NOT NULL, "+
+															"CONSTRAINT primary_key PRIMARY KEY ("+COLUMN_USER_ID+"))";
+	
 	private static final String CREATE_TODO_TABLE = "CREATE TABLE "+TABLE_TODOLIST+
 																	"("+COLUMN_TODO_ID+" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "+
-																	COLUMN_TODO	;
+																	COLUMN_TODO	+" VARCHAR(24) NOT NULL, "+
+																	COLUMN_PLACE+" VARCHAR(24) NOT NULL, "+
+																	COLUMN_USERID_FK+" INTEGER NOT NULL, "+
+																	"CONSTRAINT "+COLUMN_USERID_FK+" FOREIGN KEY ("+COLUMN_USER_ID+") REFERENCES "+TABLE_USERS+"("+COLUMN_USER_ID+"))";
 	
 	
 	
@@ -47,8 +54,32 @@ public class TestDerby {
         }
     }
 
+    public static boolean tableExist(Connection conn, String tableName) throws SQLException {
+        boolean tExists = false;
+        try (ResultSet rs = conn.getMetaData().getTables(null, null, tableName, null)) {
+            while (rs.next()) { 
+                String tName = rs.getString("TABLE_NAME");
+                if (tName != null && tName.equals(tableName)) {
+                    tExists = true;
+                    break;
+                }
+            }
+        }
+        return tExists;
+    }
 	public static void main(String[] args) {
 		createConnection();
+		
+		try{
+			stmt = conn.createStatement();
+			stmt.execute(CREATE_USER_TABLE);
+			System.out.println(TABLE_USERS +" exists: "+tableExist(conn, TABLE_USERS));
+			System.out.println(TABLE_TODOLIST +" exists: "+tableExist(conn, TABLE_TODOLIST));
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		
 		
 		
 	}
